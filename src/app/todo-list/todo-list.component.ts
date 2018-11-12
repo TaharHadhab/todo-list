@@ -1,5 +1,7 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Task } from '../models/task';
+import { Router } from '@angular/router';
+import { TodoListService } from 'src/app/services/todo-list.service';
 
 
 @Component({
@@ -10,31 +12,29 @@ import { Task } from '../models/task';
 
 export class TodoListComponent implements OnInit {
 
-  tasks: Task[] = [{ title: 'Acheter du lait', done: false },
-  { title: 'Appeler assurance', done: false },
-  { title: 'Changer abonnement téléphonique', done: false },
-  { title: 'Acheter cadeaux noel', done: false },
-  { title: 'Appeler parents', done: false },
-  { title: 'Reserver restaurant', done: false },
-  { title: 'Payer taxe habitation', done: false },
-  { title: 'Preparer entretien', done: false }];
+  tasks: Task[];
 
-  constructor() { }
+  constructor(private todoListeService: TodoListService, private router: Router) { }
 
-  ngOnInit() {}
+  ngOnInit() { 
+    this.tasks = this.todoListeService.getList();
+  }
 
-  onChange($event,task) {
+  onChange($event, task) {
     this.tasks = this.tasks.filter(it => it !== task);
-     if($event.checked){
+    if ($event.checked) {
       task.done = true;
       this.tasks.push(task);
-    } else{
+    } else {
       task.done = false;
-      this.tasks.splice(0,0,task);
+      this.tasks.splice(0, 0, task);
     }
   }
 
-  onClickTodo(task){
-    console.log('task:',task);
+  onClickTodo(task) {
+    // console.log(task);
+    this.router.navigate(['/details'], {
+      queryParams: { 'id': task.id }
+    });
   }
 }

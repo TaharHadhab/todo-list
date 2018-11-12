@@ -1,0 +1,18 @@
+<div class="container">
+  <mat-card class="card">
+    <mat-card-title>
+      {{ (task$ | async).title }}
+    </mat-card-title>
+    <mat-card-subtitle>
+      <ng-template [ngIf]="task$.done|async" [ngIfElse]="loggedOut">
+        <span class="done"> Done </span>
+      </ng-template>
+      <ng-template #loggedOut>
+        <span class="todo"> Todo </span>
+      </ng-template>
+    </mat-card-subtitle>
+    <mat-card-content>
+      {{ (task$ | async).description }}
+    </mat-card-content>
+  </mat-card>
+</div>
