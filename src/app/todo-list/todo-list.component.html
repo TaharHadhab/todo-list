@@ -1,0 +1,21 @@
+<div class="container">
+  <mat-card class="frame">
+    <h1> Todo List</h1>
+    <mat-list>
+      <mat-list-item *ngFor="let task of tasks">
+        <div class="label" (click)="onClickTodo(task)">
+        <p>
+          <span [ngClass]="{'text-crossed-out':task.done}"> {{task.title}} </span><br>
+          <ng-template [ngIf]="task.done" [ngIfElse]="loggedOut">
+            <span class="done"> Done </span>
+          </ng-template>
+          <ng-template #loggedOut>
+            <span class="todo"> Todo </span>
+          </ng-template>
+        </p>
+        </div>
+          <mat-checkbox (change)="onChange($event,task)"></mat-checkbox>
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+</div>
