@@ -13,6 +13,7 @@ import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './ngrx/reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app.effects';
+import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { AppEffects } from './app.effects';
     BrowserAnimationsModule,
     MatCardModule,
     MatCheckboxModule,
+    MatButtonModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot([AppEffects])
   ],

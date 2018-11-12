@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Task } from '../models/task';
 import { TodoListService } from 'src/app/services/todo-list.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable, zip } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { State } from 'src/app/ngrx/reducers';
 
 
 @Component({
@@ -14,12 +16,23 @@ import { map, tap } from 'rxjs/operators';
 export class TodoDetailsComponent implements OnInit {
 
   task$: Observable<any>;
- 
-  constructor(private todoListService: TodoListService, private route : ActivatedRoute) { }
+
+  constructor(private todoListService: TodoListService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private store: Store<State>) { }
 
   ngOnInit() {
-    this.task$ = this.route.queryParams.pipe(
-      map(params => this.todoListService.getTaskFromList(params.id))
-    );
+    this.task$ = zip(
+        this.route.queryParams,
+        this.store.select(state => state.tasks)
+      ).pipe(
+        map(([params, tasks]) => this.todoListService.getTaskFromList(tasks, params.id))
+      );
+
+  }
+
+  goToList() {
+    this.router.navigate(['']);
   }
 }

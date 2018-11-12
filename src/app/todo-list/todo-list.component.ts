@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Task } from '../models/task';
 import { Router } from '@angular/router';
 import { TodoListService } from 'src/app/services/todo-list.service';
-
+import { Store } from '@ngrx/store';
+import { State } from 'src/app/ngrx/reducers';
+import * as TodoListActions from "src/app/ngrx/actions/todo.list.actions";
 
 @Component({
   selector: 'app-todo-list',
@@ -14,10 +16,10 @@ export class TodoListComponent implements OnInit {
 
   tasks: Task[];
 
-  constructor(private todoListeService: TodoListService, private router: Router) { }
+  constructor(private todoListeService: TodoListService, private router: Router, private store: Store<State>) { }
 
   ngOnInit() { 
-    this.tasks = this.todoListeService.getList();
+    this.todoListeService.getList().subscribe(tasks => this.tasks=tasks);
   }
 
   onChange($event, task) {
@@ -29,10 +31,10 @@ export class TodoListComponent implements OnInit {
       task.done = false;
       this.tasks.splice(0, 0, task);
     }
+    this.store.dispatch(new TodoListActions.UpdateTodoList(this.tasks));
   }
 
   onClickTodo(task) {
-    // console.log(task);
     this.router.navigate(['/details'], {
       queryParams: { 'id': task.id }
     });
