@@ -4,17 +4,15 @@
     <mat-list>
       <mat-list-item *ngFor="let task of tasks">
         <div class="label" (click)="onClickTodo(task)">
-        <p>
-          <span [ngClass]="{'text-crossed-out':task.done}"> {{task.title}} </span><br>
+          <div [ngClass]="{'text-crossed-out':task.done}"> {{task.title}} </div>
           <ng-template [ngIf]="task.done" [ngIfElse]="loggedOut">
-            <span class="done"> Done </span>
+            <div class="done"> Done </div>
           </ng-template>
           <ng-template #loggedOut>
-            <span class="todo"> Todo </span>
+            <div class="todo"> Todo </div>
           </ng-template>
-        </p>
         </div>
-          <mat-checkbox (change)="onChange($event,task)"></mat-checkbox>
+          <mat-checkbox (change)="onChange($event,task)" [checked]="task.done"></mat-checkbox>
       </mat-list-item>
     </mat-list>
   </mat-card>

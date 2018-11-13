@@ -5,10 +5,10 @@
     </mat-card-title>
     <mat-card-subtitle>
       <ng-template [ngIf]="(task$|async)?.done" [ngIfElse]="loggedOut">
-        <span class="done"> Done </span>
+        <div class="done"> Done </div>
       </ng-template>
       <ng-template #loggedOut>
-        <span class="todo"> Todo </span>
+        <div class="todo"> Todo </div>
       </ng-template>
     </mat-card-subtitle>
     <mat-card-content>

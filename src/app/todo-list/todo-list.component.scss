@@ -1,4 +1,8 @@
 .mat-list-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
   .done{
     font-size: 80%;
   }
@@ -9,8 +13,11 @@
     text-decoration: line-through;
   }
   .label{ 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     width: 23rem;   
-    height: 5rem;
     cursor: pointer;
   }
 }

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Task } from '../models/task';
 import { Router } from '@angular/router';
 import { TodoListService } from 'src/app/services/todo-list.service';
 import { Store } from '@ngrx/store';
 import { State } from 'src/app/ngrx/reducers';
 import * as TodoListActions from "src/app/ngrx/actions/todo.list.actions";
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-todo-list',
@@ -12,14 +13,15 @@ import * as TodoListActions from "src/app/ngrx/actions/todo.list.actions";
   styleUrls: ['./todo-list.component.scss']
 })
 
-export class TodoListComponent implements OnInit {
+export class TodoListComponent implements OnInit, OnDestroy {
 
   tasks: Task[];
+  sub: Subscription;
 
   constructor(private todoListeService: TodoListService, private router: Router, private store: Store<State>) { }
 
   ngOnInit() { 
-    this.todoListeService.getList().subscribe(tasks => this.tasks=tasks);
+   this.sub = this.todoListeService.getList().subscribe(tasks => this.tasks=tasks);
   }
 
   onChange($event, task) {
@@ -39,4 +41,9 @@ export class TodoListComponent implements OnInit {
       queryParams: { 'id': task.id }
     });
   }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
+
 }
